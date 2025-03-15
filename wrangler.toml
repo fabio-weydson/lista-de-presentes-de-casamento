@@ -1,0 +1,11 @@
+name = "lista-de-casamento"
+compatibility_date = "2025-02-17"
+type = "webpack"
+route = ""
+workers_dev = true
+zone_id = ""
+assets = { directory = "build" }
+webpack_config = "webpack.config.js"
+[site]
+bucket = "./build"
+entry-point = "./"

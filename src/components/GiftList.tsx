@@ -1,5 +1,5 @@
 import React from "react";
-import { LinearProgress, Button, List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, Box, Typography, Container } from "@mui/material";
+import { LinearProgress, Button, List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, Box, Typography, Container, Modal } from "@mui/material";
 import  PaymentModal from "./PaymentModal";
 
 import { useEffect, useState } from "react";
@@ -13,6 +13,7 @@ const GiftList = () => {
     const [gifts, setGifts] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedGift, setSelectedGift] = useState<any>(null);
 
     useEffect(() => {
         const fetchGifts = async () => {
@@ -22,9 +23,10 @@ const GiftList = () => {
                 titulo,
                 valor,
                 arrecadacoes: arrecadacoes (id, valor),
-                imagem
+                imagem,
+                link
                 `
-            );
+            ).eq("active", true).order("id", { ascending: false });
             if (error) {
                 console.error("Error fetching gifts:", error);
             } else {
@@ -41,8 +43,15 @@ const GiftList = () => {
     }
 
     function handleGift(event: any, gift:any ) {
+        setIsModalOpen(false);
+        setSelectedGift(gift);
         event.preventDefault();
         setIsModalOpen(true);
+    }
+
+    function handleClose(): void {
+        setIsModalOpen(false);
+        setSelectedGift(null);
     }
 
     return (
@@ -51,7 +60,6 @@ const GiftList = () => {
             {!loading && gifts.map((gift: any, index: number) => {
                 const amountRaised = gift.arrecadacoes.reduce((acc: number, arrecadacao: any) => acc + arrecadacao.valor, 0);
                 const progress = (amountRaised / gift.valor) * 100;
-                console.log("amountRaised", amountRaised, progress);
 
                 return (
                     <Box key={gift.id} sx={{ p: 2 }}>
@@ -62,7 +70,7 @@ const GiftList = () => {
                                 alignItems: "center", 
                                 flexDirection: { xs: "column", sm: "row" }, 
                                 transition: "background-color 0.3s", 
-                                '&:hover': { backgroundColor: "#f5f5f5" }
+                                '&:hover': { backgroundColor: "#FFF" }
                             }}
                         >
                             <ListItemAvatar>
@@ -70,11 +78,12 @@ const GiftList = () => {
                                     variant="rounded" 
                                     src={gift.imagem} 
                                     sx={{ 
-                                        width: 200, 
-                                        height: 200, 
+                                        width: 250, 
+                                        height: 230, 
                                         borderRadius: 2, 
                                         border: "3px solid rgb(220, 220, 220)", 
-                                        filter: amountRaised >= gift.valor ? "grayscale(100%)" : "none" 
+                                        filter: amountRaised >= gift.valor ? "grayscale(100%)" : "none",
+                                        objectFit: "contain"
                                     }} 
                                 />
                             </ListItemAvatar>
@@ -91,13 +100,10 @@ const GiftList = () => {
                                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: { xs: 1, sm: 0 } }}>
                                     <LinearProgress variant="determinate" value={progress} sx={{ width: { xs: "100%", sm: 100 }, height: 8, borderRadius: 2, backgroundColor: "#e0e0e0", '& .MuiLinearProgress-bar': { backgroundColor: "#4caf50" } }} />
                                     <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
-                                        <Button variant="contained" sx={{ borderRadius: 2, backgroundColor: "#6ab869", '&:hover': { backgroundColor: "#346B58" } }}>
-                                            COLABORAR
-                                        </Button>
                                         <Button variant="contained" sx={{ borderRadius: 2, backgroundColor: "#40826D", '&:hover': { backgroundColor: "#346B58" } }}
-                                            onClick={(event) => handleGift(event, gift)}
+                                            onClick={(event: any) => handleGift(event, gift)}
                                         >
-                                            PRESENTEAR
+                                            COLABORAR / PRESENTEAR
                                         </Button>
                                     </Box>
                                 </Box>
@@ -108,9 +114,20 @@ const GiftList = () => {
                 );
             })}
         </List>
-        {isModalOpen && (
-            <PaymentModal gift={[]} />
-        )}
+        <Box className="footer" sx={{ mt: 2, textAlign: "center", backgroundColor: "#ddd", p: 1, my: 0}}>
+        <Typography variant="body2" color="textSecondary" align="center" >
+            Lista atualizada todos os dias à meia-noite.
+        </Typography>
+        </Box>
+        <Modal
+              open={isModalOpen}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <PaymentModal gift={selectedGift} onClose={handleClose} />
+            </Modal>
+        
         </>
     );
 };
