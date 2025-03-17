@@ -5,6 +5,7 @@ import { Tab, Tabs } from "@mui/material";
 import { QrCodePix } from 'qrcode-pix';
 
 const {
+  REACT_APP_PIX_ENABLED,
   REACT_APP_SHOP_ENABLED,
   REACT_APP_SHIPPING_ADDRESS,
   REACT_APP_PIX_KEY,
@@ -12,7 +13,7 @@ const {
   REACT_APP_PIX_CITY,
 } = process.env;
 
-const style = {
+const boxStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -56,15 +57,15 @@ const PaymentModal = ({ gift, onClose }: PaymentModalProps) => {
   },[]);
 
     return (
-          <Box sx={style}>
+          <Box sx={boxStyle}>
               <Tabs value={tabIndex} onChange={handleTabChange}  centered
                 sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}
               >
-                <Tab label="Pix" />
-                {gift.link && <Tab label="Ou" disabled /> }
+                {REACT_APP_PIX_ENABLED && <Tab label="Pix" /> }
+                {REACT_APP_SHOP_ENABLED && gift.link && <Tab label="Ou" disabled /> }
                 {REACT_APP_SHOP_ENABLED && gift.link && <Tab label="Comprar" /> }
               </Tabs>
-              {tabIndex === 0 && (
+              {tabIndex === 0 && REACT_APP_PIX_ENABLED && (
                 <Box mt={2}>
                   <Typography variant="body1" color="textSecondary" align="center" gutterBottom>Para realizar o pagamento <b>parcial</b> ou <b>total</b>, use o QR Code abaixo:</Typography>
                   <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">

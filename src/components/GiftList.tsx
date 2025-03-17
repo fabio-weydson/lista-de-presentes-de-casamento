@@ -5,8 +5,14 @@ import  PaymentModal from "./PaymentModal";
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = `${process.env.REACT_APP_SUPABSE_URL}`;
-const supabaseKey = `${process.env.REACT_APP_SUPABASE_KEY}`;
+const {
+    REACT_APP_SUPABASE_URL,
+    REACT_APP_SUPABASE_KEY,
+    REACT_APP_EVENT_MAIN_COLOR
+} = process.env;
+
+const supabaseUrl = `${REACT_APP_SUPABASE_URL}`;
+const supabaseKey = `${REACT_APP_SUPABASE_KEY}`;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const GiftList = () => {
@@ -100,7 +106,7 @@ const GiftList = () => {
                                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: { xs: 1, sm: 0 } }}>
                                     <LinearProgress variant="determinate" value={progress} sx={{ width: { xs: "100%", sm: 100 }, height: 8, borderRadius: 2, backgroundColor: "#e0e0e0", '& .MuiLinearProgress-bar': { backgroundColor: "#4caf50" } }} />
                                     <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
-                                        <Button variant="contained" sx={{ borderRadius: 2, backgroundColor: "#40826D", '&:hover': { backgroundColor: "#346B58" } }}
+                                        <Button variant="contained" sx={{ borderRadius: 2, backgroundColor: REACT_APP_EVENT_MAIN_COLOR, '&:hover': { backgroundColor: REACT_APP_EVENT_MAIN_COLOR } }}
                                             onClick={(event: any) => handleGift(event, gift)}
                                         >
                                             COLABORAR / PRESENTEAR

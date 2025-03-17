@@ -4,6 +4,20 @@ import GiftList from './components/GiftList';
 import { Container, Typography } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+
+const {
+  REACT_APP_EVENT_COUPLE_NAME,
+  REACT_APP_EVENT_DATE = new Date().toISOString(),
+  REACT_APP_EVENT_MAIN_COLOR
+} = process.env;
+
+
+const formatedDate = new Date(REACT_APP_EVENT_DATE).toLocaleDateString('pt-BR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
 function App() {
   return (
     <BrowserRouter>
@@ -20,14 +34,14 @@ function App() {
       </>} />
       <Route path="/" element={
         <>
-        <Container sx={{ p: 0, my: 0, maxWidth: 600, mt: 80, bgcolor: "#f3fff2", borderTop: "5px solid #40826D" }}>
+        <Container sx={{ p: 0, my: 0, maxWidth: 600, mt: 80, bgcolor: "#f5f5f5", borderTop: `5px solid ${REACT_APP_EVENT_MAIN_COLOR}` }}>
           <Typography variant="h5" align="center" sx={{ pt: 2 }}>
-            <b>Filipa & Fábio</b>
+            <b>{REACT_APP_EVENT_COUPLE_NAME}</b>
           </Typography>
           <Typography variant="h6" gutterBottom align="center">
-            08 de Março de 2025
+            {formatedDate}
           </Typography>
-          <Typography variant="h4" align="center" color='green' >
+          <Typography variant="h4" align="center" color={REACT_APP_EVENT_MAIN_COLOR} >
             Lista de Presentes
           </Typography>
           <GiftList/>

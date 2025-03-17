@@ -3,6 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App'
 
+const {
+  REACT_APP_EVENT_MAIN_COLOR = '#f3fff2',
+  REACT_APP_EVENT_IMAGE,
+} = process.env;
+
+document.body.style.backgroundColor = REACT_APP_EVENT_MAIN_COLOR;
+document.body.style.backgroundImage = `url(${REACT_APP_EVENT_IMAGE})`;
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

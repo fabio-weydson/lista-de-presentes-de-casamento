@@ -1,7 +1,11 @@
 {
-  "name": "lista-de-casamento",
+  "name": "lista-de-presentes-casamento",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Fabio Weydson",
+    "email": "masted_bungee.3x@icloud.com"
+  },
   "main": "index.js",
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -11,7 +15,6 @@
     "@supabase/supabase-js": "^2.48.1",
     "buffer": "^6.0.3",
     "cra-template-typescript": "1.2.0",
-    "faz-um-pix": "^2.0.2",
     "qrcode-pix": "^5.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
