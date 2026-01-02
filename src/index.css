@@ -8,8 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-repeat: no-repeat;
   background-position-x: center;
-  background-position-y: -200px;
-  background-size: 80vh;
-  color: #333;
+  background-size: 75vh;
+  color: #333333;
 }
 

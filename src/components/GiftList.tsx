@@ -1,21 +1,15 @@
-import React from "react";
 import { LinearProgress, Button, List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, Box, Typography, Container, Modal } from "@mui/material";
 import  PaymentModal from "./PaymentModal";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useSupabase } from "../contexts/supabase.context";
 
-const {
-    REACT_APP_SUPABASE_URL,
-    REACT_APP_SUPABASE_KEY,
-    REACT_APP_EVENT_MAIN_COLOR
-} = process.env;
+type GiftListProps = {
+    event: any;
+};
 
-const supabaseUrl = `${REACT_APP_SUPABASE_URL}`;
-const supabaseKey = `${REACT_APP_SUPABASE_KEY}`;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-const GiftList = () => {
+const GiftList = ({ event }: GiftListProps) => {
+    const { supabase } = useSupabase();
     const [gifts, setGifts] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,7 +26,8 @@ const GiftList = () => {
                 imagem,
                 link
                 `
-            ).eq("active", true).order("id", { ascending: false });
+            ).eq("active", true).order("id", { ascending: false })
+            .eq("evento_id", event.id);
             if (error) {
                 console.error("Error fetching gifts:", error);
             } else {
@@ -106,7 +101,7 @@ const GiftList = () => {
                                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: { xs: 1, sm: 0 } }}>
                                     <LinearProgress variant="determinate" value={progress} sx={{ width: { xs: "100%", sm: 100 }, height: 8, borderRadius: 2, backgroundColor: "#e0e0e0", '& .MuiLinearProgress-bar': { backgroundColor: "#4caf50" } }} />
                                     <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
-                                        <Button variant="contained" sx={{ borderRadius: 2, backgroundColor: REACT_APP_EVENT_MAIN_COLOR, '&:hover': { backgroundColor: REACT_APP_EVENT_MAIN_COLOR } }}
+                                        <Button variant="contained" sx={{ borderRadius: 2, backgroundColor: event.corPrincipal, '&:hover': { backgroundColor: event.corPrincipal } }}
                                             onClick={(event: any) => handleGift(event, gift)}
                                         >
                                             COLABORAR / PRESENTEAR
